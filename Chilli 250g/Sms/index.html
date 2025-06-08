@@ -1,193 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Share Your Location</title>
-    <style>
-  body {
-    font-family: Verdana, sans-serif;
-    text-align: center;       /* Center-align ALL content */
-    padding: 20px;
-    max-width: 600px;        /* Prevent content from stretching too wide */
-    margin: 0 auto;          /* Center the entire page horizontally */
-    font-size: 18px;         /* Base font size (larger than default) */
-  }
-  h2 {
-    font-size: 28px;         /* Larger title */
-    color: #4CAF50;          /* Green accent (optional) */
-    margin-bottom: 20px;
-  }
-  button {
-    background: #4CAF50;
-    color: white;
-    border: none;
-    padding: 15px 30px;      /* Bigger button */
-    font-size: 20px;         /* Larger button text */
-    border-radius: 8px;
-    cursor: pointer;
-    margin: 20px 0;
-    transition: 0.3s;        /* Smooth hover effect */
-  }
-  button:hover {
-    opacity: 0.9;
-    transform: scale(1.02);  /* Slight zoom on hover */
-  }
-  #status {
-    font-size: 22px;         /* Larger location text */
-    color: #333;
-    margin: 25px 0;
-    word-break: break-word;  /* Prevent long coordinates from overflowing */
-  }
-    </style><style>
-  body {
-    font-family: Verdana, sans-serif;
-    text-align: center;       /* Center-align ALL content */
-    padding: 20px;
-    max-width: 600px;        /* Prevent content from stretching too wide */
-    margin: 0 auto;          /* Center the entire page horizontally */
-    font-size: 18px;         /* Base font size (larger than default) */
-  }
-  h2 {
-    font-size: 28px;         /* Larger title */
-    color: #4CAF50;          /* Green accent (optional) */
-    margin-bottom: 20px;
-  }
-  button {
-    background: #4CAF50;
-    color: white;
-    border: none;
-    padding: 15px 30px;      /* Bigger button */
-    font-size: 20px;         /* Larger button text */
-    border-radius: 8px;
-    cursor: pointer;
-    margin: 20px 0;
-    transition: 0.3s;        /* Smooth hover effect */
-  }
-  button:hover {
-    opacity: 0.9;
-    transform: scale(1.02);  /* Slight zoom on hover */
-  }
-  #status {
-    font-size: 22px;         /* Larger location text */
-    color: #333;
-    margin: 25px 0;
-    word-break: break-word;  /* Prevent long coordinates from overflowing */
-  }
-    </style>
-</head>
-<body>
-    <h2>🌶️ Order Chilli (250g)</h2>
-    <p>We'll fetch your location to share with the seller:</p>
-    
-    <button onclick="getLocation()">📍 Share My Location</button>
-    <p id="status">Waiting for your permission...</p>
-    
+    <title>Share Location via SMS</title>
     <script>
-        function getLocation() {
-            const status = document.getElementById("status");
-            
+        function getLocationAndRedirect() {
             if (!navigator.geolocation) {
-                status.textContent = "Geolocation is not supported by your browser.";
+                alert("Geolocation not supported by your browser.");
                 return;
             }
-            
-            status.textContent = "Getting your location...";
-            
+
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
-                    status.innerHTML = `📍 Location found! <small>(${lat.toFixed(5)}, ${lng.toFixed(5)})</small>`;
                     
-                    // Generate message with Google Maps link
-                    const message = `Hello! I need Chilli 250g. My location: https://www.google.com/maps?q=${lat},${lng}`;
+                    // Generate Google Maps link
+                    const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
+                    const message = `Hello! I need Chilli 250g. My location: ${mapsLink}`;
                     
-                    // Open SMS with pre-filled message (for mobile)
+                    // Open SMS with pre-filled message
                     window.location.href = `sms:+918848408294?body=${encodeURIComponent(message)}`;
-                    
-                    // Alternative: Copy to clipboard (fallback)
-                    navigator.clipboard.writeText(message);
-                    alert("Message copied! Paste it in any app.");
                 },
                 (error) => {
-                    status.textContent = "Error: " + {
-                        1: "Permission denied",
-                        2: "Location unavailable",
-                        3: "Request timed out"
-                    }[error.code] || "Failed to get location";
-                }
+                    alert("Location access denied. Please enable permissions.");
+                },
+                { timeout: 5000 } // Wait max 5 seconds for location
             );
         }
+
+        // Run immediately when page loads
+        window.onload = getLocationAndRedirect;
     </script>
-</body>
-</html><!DOCTYPE html>
-<html>
-<head>
-    <title>Share Your Location</title>
-    <style>
-        body {
-            font-family: Verdana, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-        button {
-            background: #4d5656;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 10px;
-        }
-        #status {
-            margin: 20px;
-            color: #666;
-        }
-    </style>
 </head>
 <body>
-    <h2>🌶️ Order Chilli (250g)</h2>
-    <p>We'll fetch your location to share with the seller:</p>
-    
-    <button onclick="getLocation()">📍 Share My Location</button>
-    <p id="status">Waiting for your permission...</p>
-    
-    <script>
-        function getLocation() {
-            const status = document.getElementById("status");
-            
-            if (!navigator.geolocation) {
-                status.textContent = "Geolocation is not supported by your browser.";
-                return;
-            }
-            
-            status.textContent = "Getting your location...";
-            
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    status.innerHTML = `📍 Location found! <small>(${lat.toFixed(5)}, ${lng.toFixed(5)})</small>`;
-                    
-                    // Generate message with Google Maps link
-                    const message = `Hello! I need Chilli 250g. My location: https://www.google.com/maps?q=${lat},${lng}`;
-                    
-                    // Open SMS with pre-filled message (for mobile)
-                    window.location.href = `sms:+918848408294?body=${encodeURIComponent(message)}`;
-                    
-                    // Alternative: Copy to clipboard (fallback)
-                    navigator.clipboard.writeText(message);
-                    alert("Message copied! Paste it in any app.");
-                },
-                (error) => {
-                    status.textContent = "Error: " + {
-                        1: "Permission denied",
-                        2: "Location unavailable",
-                        3: "Request timed out"
-                    }[error.code] || "Failed to get location";
-                }
-            );
-        }
-    </script>
+    <p>Loading location and redirecting to SMS...</p>
 </body>
 </html>
