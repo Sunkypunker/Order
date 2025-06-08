@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Share Location via SMS</title>
+    <title>MR MILLER</title>
     <style>
         body {
             margin: 0;
@@ -10,26 +10,20 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
+            background-color: transparent; /* No background */
         }
-        .popup {
-            font-size: 32px;
+        .mr-miller-text {
+            font-size: 48px;              /* Bigger text */
             font-weight: bold;
-            color: #333;
-            text-align: center;
-            padding: 20px;
-            border-radius: 0px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            color: #000;                  /* Pure black */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Text shadow */
+            font-family: Arial, sans-serif;
         }
     </style>
     <script>
         function getLocationAndRedirect() {
-            document.body.innerHTML = '<div class="popup">MR MILLER</div>';
-            
             if (!navigator.geolocation) {
-                alert("Geolocation not supported by your browser.");
+                alert("Geolocation not supported");
                 return;
             }
 
@@ -37,24 +31,18 @@
                 (position) => {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
-                    const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
-                    const message = `Hello! I need Chilli 250g. My location: ${mapsLink}`;
+                    const message = `Hello! I need Chilli 250g. My location: https://www.google.com/maps?q=${lat},${lng}`;
                     window.location.href = `sms:+918848408294?body=${encodeURIComponent(message)}`;
                 },
                 (error) => {
-                    document.body.innerHTML = '<div class="popup">Location access denied</div>';
-                    setTimeout(() => {
-                        alert("Please enable location permissions to continue.");
-                    }, 1000);
-                },
-                { timeout: 5000 }
+                    document.querySelector(".mr-miller-text").textContent = "Location blocked";
+                }
             );
         }
-
         window.onload = getLocationAndRedirect;
     </script>
 </head>
 <body>
-    <!-- Content will be replaced by JavaScript -->
+    <div class="mr-miller-text">MR MILLER</div>
 </body>
 </html>
