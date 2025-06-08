@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Share Your Location</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        #status {
+            margin: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h2>🌶️ Order Chilli (250g)</h2>
+    <p>We'll fetch your location to share with the seller:</p>
+    
+    <button onclick="getLocation()">📍 Share My Location</button>
+    <p id="status">Waiting for your permission...</p>
+    
+    <script>
+        function getLocation() {
+            const status = document.getElementById("status");
+            
+            if (!navigator.geolocation) {
+                status.textContent = "Geolocation is not supported by your browser.";
+                return;
+            }
+            
+            status.textContent = "Getting your location...";
+            
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    status.innerHTML = `📍 Location found! <small>(${lat.toFixed(5)}, ${lng.toFixed(5)})</small>`;
+                    
+                    // Generate message with Google Maps link
+                    const message = `Hello! I need Chilli 250g. My location: https://www.google.com/maps?q=${lat},${lng}`;
+                    
+                    // Open SMS with pre-filled message (for mobile)
+                    window.location.href = `sms:+918848408294?body=${encodeURIComponent(message)}`;
+                    
+                    // Alternative: Copy to clipboard (fallback)
+                    navigator.clipboard.writeText(message);
+                    alert("Message copied! Paste it in any app.");
+                },
+                (error) => {
+                    status.textContent = "Error: " + {
+                        1: "Permission denied",
+                        2: "Location unavailable",
+                        3: "Request timed out"
+                    }[error.code] || "Failed to get location";
+                }
+            );
+        }
+    </script>
+</body>
+  </html>
