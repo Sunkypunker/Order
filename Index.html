@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sunkypunk Order</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    function sendLocationToWhatsApp() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const mapsLink = `https://maps.google.com/?q=${lat},${lon}`;
+          const message = `Hello from Sunkypunk! My order is CHILLI POWDER 250 GRAM. Location: ${mapsLink}`;
+          const phone = "918848408294";
+          const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+          window.location.href = url;
+        }, () => {
+          alert("Please allow location access to send your order.");
+        });
+      } else {
+        alert("Geolocation is not supported by your browser.");
+      }
+    }
+
+    window.onload = sendLocationToWhatsApp;
+  </script>
+</head>
+<body>
+  <p>Redirecting to WhatsApp...</p>
+</body>
+</html>
