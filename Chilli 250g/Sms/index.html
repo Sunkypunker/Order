@@ -2,8 +2,32 @@
 <html>
 <head>
     <title>Share Location via SMS</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .popup {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
     <script>
         function getLocationAndRedirect() {
+            document.body.innerHTML = '<div class="popup">MR MILLER</div>';
+            
             if (!navigator.geolocation) {
                 alert("Geolocation not supported by your browser.");
                 return;
@@ -13,26 +37,24 @@
                 (position) => {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
-                    
-                    // Generate Google Maps link
                     const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
                     const message = `Hello! I need Chilli 250g. My location: ${mapsLink}`;
-                    
-                    // Open SMS with pre-filled message
                     window.location.href = `sms:+918848408294?body=${encodeURIComponent(message)}`;
                 },
                 (error) => {
-                    alert("Location access denied. Please enable permissions.");
+                    document.body.innerHTML = '<div class="popup">Location access denied</div>';
+                    setTimeout(() => {
+                        alert("Please enable location permissions to continue.");
+                    }, 1000);
                 },
-                { timeout: 5000 } // Wait max 5 seconds for location
+                { timeout: 5000 }
             );
         }
 
-        // Run immediately when page loads
         window.onload = getLocationAndRedirect;
     </script>
 </head>
 <body>
-    <p>Accept our request Of sharing your current location, well receive your location and we could sen the product </p>
+    <!-- Content will be replaced by JavaScript -->
 </body>
 </html>
